@@ -1,0 +1,124 @@
+geo $isp {
+    ::1 Local;
+    127.0.0.1 Local;
+    51.158.15.55 Local;
+    2001:0bc8:1600:0000:0208:a2ff:fe0c:83a6 Local;
+
+    173.245.48.0/20 Cloudflare;
+    103.21.244.0/22 Cloudflare;
+    103.22.200.0/22 Cloudflare;
+    103.31.4.0/22 Cloudflare;
+    141.101.64.0/18 Cloudflare;
+    108.162.192.0/18 Cloudflare;
+    190.93.240.0/20 Cloudflare;
+    188.114.96.0/20 Cloudflare;
+    197.234.240.0/22 Cloudflare;
+    198.41.128.0/17 Cloudflare;
+    162.158.0.0/15 Cloudflare;
+    104.16.0.0/13 Cloudflare;
+    104.24.0.0/14 Cloudflare;
+    172.64.0.0/13 Cloudflare;
+    131.0.72.0/22 Cloudflare;
+
+    2400:cb00::/32 Cloudflare;
+    2606:4700::/32 Cloudflare;
+    2803:f800::/32 Cloudflare;
+    2405:b500::/32 Cloudflare;
+    2405:8100::/32 Cloudflare;
+    2a06:98c0::/29 Cloudflare;
+    2c0f:f248::/32 Cloudflare;
+    default Guest;
+}
+map $isp $x_connecting_ip {
+    "Cloudflare" "$http_cf_connecting_ip";
+    default "$remote_addr";
+}
+
+upstream api {server 127.0.0.1:443;}
+upstream websocket {server bintu-h5live-secure.nanocosmos.de:443;}
+
+map $arg_ip $stream_backend {
+    192.140.2.9 stream1;
+    147.78.196.223 stream2;
+    192.146.138.83 stream3;
+    45.11.155.171 stream4;
+    5.181.37.19 stream5;
+    default stream1;
+}
+
+upstream stream1 {server 163.171.145.218:443;}
+upstream stream2 {server 163.171.130.108:443;}
+upstream stream3 {server 157.185.179.139:443;}
+upstream stream4 {server 163.171.158.162:443;}
+upstream stream5 {server 163.171.128.129:443;}
+
+server {
+
+    listen              8443 ssl http2 default_server;
+    listen              [::]:8443 ssl http2 default_server;
+
+    server_name         _;
+
+    #if ($time_iso8601 ~ "^(\d{4})-(\d{2})-(\d{2})") {set $year $1;set $month $2;set $day $3;}
+
+    #access_log          /var/www/logs/access-$isp-$x_connecting_ip-$http_host-$year-$month-$day.log custom;
+
+    ssl_certificate     /etc/letsencrypt/live/playcasinos.stream/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/playcasinos.stream/privkey.pem;
+    ssl_protocols       TLSv1 TLSv1.1 TLSv1.2;
+    ssl_dhparam         /etc/ssl/certs/dhparam.pem;
+
+    location ~ / {
+
+        if ($request_method = "OPTIONS") {
+
+            add_header "Access-Control-Allow-Origin" "https://*.playcasinos.stream";
+            add_header "Access-Control-Allow_Credentials" "true";
+            add_header "Access-Control-Allow-Headers" "Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range";
+            add_header "Access-Control-Allow-Methods" "GET,PUT,POST,DELETE,OPTIONS";
+            add_header "Access-Control-Max-Age" 1728000;
+            add_header "Content-Type" "text/plain charset=UTF-8";
+            add_header "Content-Length" 0;
+            return 204;
+        }
+
+        # Match any URL containing the "tag" parameter and set its value to "Gx247demo"
+        #if ($args ~* "(.*)(^|&)tag=[^&]*(.*)") {set $args $1$2tag=Gx247demo$3;}
+
+        proxy_pass https://websocket;
+
+        proxy_http_version 1.1;
+        proxy_ssl_server_name on;
+
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "Upgrade";
+
+        #proxy_set_header X-Real-IP $remote_addr;
+        #proxy_set_header X-Forwarded-Proto $scheme;
+        #proxy_set_header X-Connecting-IP $x_connecting_ip;
+        #proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+        proxy_set_header Host "bintu-h5live-secure.nanocosmos.de";
+        proxy_set_header User-Agent "Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0";
+        proxy_set_header Origin "https://www.martine247.com";
+        proxy_set_header Sec-Fetch-Site "cross-site";
+
+    }
+}
+
+server {
+    listen      80 default_server;
+    listen      [::]:80 default_server;
+    server_name _;
+    return      301 https://$http_host$request_uri;
+
+    root /var/www/html;
+    index index.php index.html index.htm index.nginx-debian.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+    location ~ /\.ht {
+        deny all;
+    }
+}

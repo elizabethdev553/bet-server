@@ -1,0 +1,60 @@
+sudo ufw disable
+sudo ufw reset
+sudo ufw default deny incoming && sudo ufw default allow outgoing
+sudo ufw allow from ::1
+sudo ufw allow from 127.0.0.1
+sudo ufw allow from 198.18.0.0/15
+sudo ufw allow from 51.158.150.55
+sudo ufw allow from 2001:0bc8:1600:0000:0208:a2ff:fe0c:83a6
+
+sudo ufw allow from 51.158.153.49
+sudo ufw allow from 2001:bc8:32d7:1407::/64
+
+sudo ufw allow from 51.15.10.212
+sudo ufw allow from 2001:bc8:32d7:51b::/64
+
+sudo ufw allow from 51.15.17.126
+sudo ufw allow from 2001:0bc8:6010:0203:ae1f:6bff:fe83:a1c0
+
+sudo ufw allow from 51.15.20.171
+sudo ufw allow from 2001:0bc8:6010:0206:ae1f:6bff:fe27:3260
+
+sudo ufw allow from 103.85.10.79 to any port 3389 proto tcp
+
+sudo ufw allow from 41.188.0.0/18 to any port 3389 proto tcp
+sudo ufw allow from 41.207.32.0/19 to any port 3389 proto tcp
+sudo ufw allow from 102.16.0.0/14 to any port 3389 proto tcp
+sudo ufw allow from 102.20.0.0/15 to any port 3389 proto tcp
+sudo ufw allow from 154.126.0.0/17 to any port 3389 proto tcp
+sudo ufw allow from 192.139.15.0/24 to any port 3389 proto tcp
+sudo ufw allow from 196.43.214.0/24 to any port 3389 proto tcp
+sudo ufw allow from 196.49.13.0/24 to any port 3389 proto tcp
+sudo ufw allow from 196.192.32.0/20 to any port 3389 proto tcp
+sudo ufw allow from 197.149.0.0/18 to any port 3389 proto tcp
+
+sudo ufw allow from 41.63.128.0/20 to any port 3389 proto tcp
+sudo ufw allow from 41.63.144.0/24 to any port 3389 proto tcp
+sudo ufw allow from 41.63.146.0/23 to any port 3389 proto tcp
+sudo ufw allow from 41.63.148.0/22 to any port 3389 proto tcp
+sudo ufw allow from 41.63.157.0/24 to any port 3389 proto tcp
+sudo ufw allow from 41.63.158.0/23 to any port 3389 proto tcp
+sudo ufw allow from 41.74.16.0/20 to any port 3389 proto tcp
+sudo ufw allow from 41.74.208.0/20 to any port 3389 proto tcp
+sudo ufw allow from 41.190.236.0/22 to any port 3389 proto tcp
+sudo ufw allow from 102.68.192.0/18 to any port 3389 proto tcp
+sudo ufw allow from 154.120.128.0/18 to any port 3389 proto tcp
+sudo ufw allow from 197.159.144.0/20 to any port 3389 proto tcp
+sudo ufw allow from 197.215.192.0/20 to any port 3389 proto tcp
+
+sudo ufw allow from 41.77.16.0/21 to any port 3389 proto tcp
+sudo ufw allow from 197.148.128.0/18 to any port 3389 proto tcp
+
+cd /tmp
+wget https://www.cloudflare.com/ips-v4 -O ips-v4-cloudflare.tmp
+wget https://www.cloudflare.com/ips-v6 -O ips-v6-cloudflare.tmp
+for cfip in `cat ips-v4-cloudflare.tmp`; do echo 'sudo ufw allow from '$cfip' to any port 443,8443 proto tcp' && sudo ufw allow from $cfip to any port 443,8443 proto tcp; done
+for cfip in `cat ips-v6-cloudflare.tmp`; do echo 'sudo ufw allow from '$cfip' to any port 443,8443 proto tcp' && sudo ufw allow from $cfip to any port 443,8443 proto tcp; done
+ls -hl && rm -rf ips-v4-cloudflare.tmp ips-v6-cloudflare.tmp && ls -hl
+sudo ufw enable
+
+sudo ufw status numbered

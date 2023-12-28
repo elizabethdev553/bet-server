@@ -1,0 +1,21 @@
+{
+  "dependencies": {
+    "@fastify/cors": "^8.4.0",
+    "@fastify/rate-limit": "^8.0.3",
+    "@fastify/redis": "^6.1.1",
+    "@fastify/websocket": "^8.2.0",
+    "cluster": "^0.7.7",
+    "crypto-js": "^4.1.1",
+    "eccrypto": "^1.1.6",
+    "fastify": "^4.23.2",
+    "fs": "^0.0.1-security",
+    "https-proxy-agent": "^7.0.2",
+    "ioredis": "^5.3.2",
+    "node-cache": "^5.1.2",
+    "node-fetch": "^2.7.0",
+    "os": "^0.1.2",
+    "robotjs": "^0.6.0",
+    "socks-proxy-agent": "^8.0.2",
+    "ws": "^8.14.2"
+  }
+}

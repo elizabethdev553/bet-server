@@ -1,0 +1,44 @@
+{
+    "ips": [
+                "127.0.0.1","::1",//(Local IP)
+                "198.18.0.1",//(Local IP)
+                "198.18.1.1",//(Local IP)
+                "198.18.2.1",//(Local IP)
+                "198.18.3.1",//(Local IP)
+                "198.18.4.1",//(Local IP)
+                "198.18.5.1",//(Local IP)
+                "198.18.6.1",//(Local IP)
+                "198.18.7.1",//(Local IP)
+                "198.18.8.1",//(Local IP)
+                "198.18.9.1",//(Local IP)
+                "198.18.10.1",//(Local IP)
+                "198.18.11.1",//(Local IP)
+                "198.18.12.1",//(Local IP)
+                "198.18.13.1",//(Local IP)
+                "198.18.14.1",//(Local IP)
+                "198.18.15.1",//(Local IP)
+                "198.18.16.1",//(Local IP)
+                "198.18.17.1",//(Local IP)
+                "198.18.18.1",//(Local IP)
+                "198.18.19.1",//(Local IP)
+                "198.18.20.1",//(Local IP)
+
+                "51.15.10.212","2001:bc8:32d7:1407::",//(Server IP)
+                "51.158.153.49","2001:bc8:32d7:51b::",//(Server IP)
+                "51.15.17.126","2001:bc8:6010:203:ae1f:6bff:fe83:a1c0",//(Server IP)
+                "51.15.20.171","2001:bc8:6010:206:ae1f:6bff:fe27:3260",//(Server IP)
+
+                "63.250.36.133",//(Client IP)
+                "103.85.10.79",//(Client IP)
+
+                "161.77.11.124",//(API Developer IP)
+                "161.77.11.154",//(API Developer IP)
+                "51.158.150.55","2001:bc8:1600:0:208:a2ff:fe0c:83a6",//(API Developer IP)
+    ],
+    "referer": [
+                "www.playcasinos.stream",
+                "marutiexch99.com",
+                "marutiexch9.com",
+                "abhilash.shop",
+    ]
+}
